@@ -9,9 +9,6 @@
 
   <ItemGroup>
     <PackageReference Include="bleak.Api.Rest" Version="2.1.0" />
-    <PackageReference Include="Jose-JWT" Version="5.1.0" />
-    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.3.1" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.3.1" />
   </ItemGroup>
    <Target Name="CopyConfigFile" AfterTargets="Build">
     <Copy SourceFiles="config.json.user" DestinationFiles="$(OutDir)config.json" />
