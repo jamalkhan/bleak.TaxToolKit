@@ -1,0 +1,31 @@
+name: Build and Test
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '5.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore TaxToolKit.sln
+
+    - name: Build solution
+      run: dotnet build TaxToolKit.sln --configuration Release --no-restore
+
+    - name: Run tests
+      run: dotnet test TaxToolKit.sln --no-build --verbosity normal
