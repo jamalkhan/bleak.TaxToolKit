@@ -1,42 +1,62 @@
 ﻿using System;
-using System.Net.Http;
-using System.Security.Cryptography;
-using System.IO;
 using bleak.TaxToolKit.ConsoleApp.Configuration;
 using bleak.Api.Rest;
+using bleak.TaxToolKit.ConsoleApp.CoinGecko.DTOs;
+using bleak.TaxToolKit.ConsoleApp.Apps;
 
 namespace bleak.TaxToolKit.ConsoleApp
 {
     public static class Program
     {
-        static JsonSerializer _serializer = new JsonSerializer();
-        static RestManager _restManager = new RestManager(_serializer, _serializer);
-
         public static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            var appTypes = AppDomain.CurrentDomain.GetAssemblies()
+            .SelectMany(a => a.GetTypes())
+                .Where(t => typeof(IConsoleApp).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract)
+                .ToList();
 
-            // Replace these with your actual credentials
-            
-            // API endpoint
-            //string endpoint = "api.coinbase.com/api/v3/brokerage/products";
-            string endpoint = "/api/v3/brokerage/orders/historical/batch";
-            string baseUrl = "https://api.coinbase.com";
-            string url = $"{baseUrl}{endpoint}";
-            
-            
-            var response = _restManager.ExecuteRestMethod<string, string>(
-                uri: new Uri(url), 
-                verb: HttpVerbs.GET
-            );
+            var appInstances = appTypes.Select(t => (IConsoleApp)Activator.CreateInstance(t)!)
+            .ToList();
 
-            Console.WriteLine(response);
-            Console.WriteLine(response.Results);
-            Console.ReadLine();
+            do
+            {
+                Console.WriteLine("What would you like to do?");
+                foreach (var app in appInstances)
+                {
+                    var attribute = (ConsoleAppSettingsAttribute)Attribute.GetCustomAttribute(app.GetType(), typeof(ConsoleAppSettingsAttribute));
+                    if (attribute != null)
+                    {
+                        var appName = string.IsNullOrEmpty(attribute.Name) ? app.GetType().Name : attribute.Name;
+                        Console.WriteLine($"{attribute.Id}. {appName}");
+                    }
+                }
+                Console.WriteLine("Q. Exit");
+
+                var response = Console.ReadLine();
+                if (response!.ToLower() == "q")
+                {
+                    return;
+                }
+
+                var selectedApp = appInstances.FirstOrDefault(app =>
+                {
+                    var attribute = (ConsoleAppSettingsAttribute)Attribute.GetCustomAttribute(app.GetType(), typeof(ConsoleAppSettingsAttribute));
+                    return attribute != null && attribute.Id.ToString() == response;
+                });
+
+                if (selectedApp != null)
+                {
+                    selectedApp.Run();
+                }
+                else
+                {
+                    Console.WriteLine("Invalid option. Please try again.");
+                }
+            } while (true);
         }
 
 
-  
+
     }
 }
 
