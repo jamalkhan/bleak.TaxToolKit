@@ -2,18 +2,20 @@ namespace bleak.TaxToolKit.ConsoleApp.FileOps
 {
     public class EthereumTransaction
     {
-        public string TransactionHash { get; set; }
-        public string Blockno { get; set; }
-        public string UnixTimestamp { get; set; }
-        public string DateTimeUTC { get; set; }
-        public string From { get; set; }
-        public string To { get; set; }
-        public string TokenValue { get; set; }
-        public string USDValueDayOfTx { get; set; }
-        public string ContractAddress { get; set; }
-        public string TokenName { get; set; }
-        public string TokenSymbol { get; set; }
-        public string WalletAddress { get; set; }
-        public string Platform { get; set; }
+        public string TransactionHash { get; set; } = string.Empty;
+        public string Blockno { get; set; } = string.Empty;
+        public string UnixTimestamp { get; set; } = string.Empty;
+        public DateTime DateTimeUTC { get; set; }
+        public string From { get; set; } = string.Empty;
+        public string To { get; set; } = string.Empty;
+        public string TokenValue { get; set; } = string.Empty;
+        public string USDValueDayOfTx { get; set; } = string.Empty;
+        public string ContractAddress { get; set; } = string.Empty;
+        public string TokenName { get; set; } = string.Empty;
+        public string TokenSymbol { get; set; } = string.Empty;
+        public string WalletAddress { get; set; } = string.Empty;
+        public string Platform { get; set; } = string.Empty;
+        public string CoinGeckoId { get;set;} = string.Empty;
+        public decimal? HistoricalPrice { get;set;}
     }
 }

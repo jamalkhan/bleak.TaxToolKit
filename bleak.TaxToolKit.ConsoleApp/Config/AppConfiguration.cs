@@ -7,5 +7,6 @@ namespace bleak.TaxToolKit.ConsoleApp.Configuration
     {
         public string CoinbaseAPiKey { get;set; } = string.Empty;
         public string CoinbasePrivateKey { get; set; } = string.Empty;
+        public bool Debug { get; set; } = false;
     }
 }
