@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="bleak.Api.Rest" Version="2.1.0" />
+    <PackageReference Include="CsvHelper" Version="33.0.1" />
   </ItemGroup>
    <Target Name="CopyConfigFile" AfterTargets="Build">
     <Copy SourceFiles="config.json.user" DestinationFiles="$(OutDir)config.json" />
